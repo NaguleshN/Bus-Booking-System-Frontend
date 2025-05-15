@@ -1,7 +1,8 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../services/api";
+import { useLoginMutation } from "../../services/loginApiSlice.ts";
 import Toast from '../../Components/Toast.tsx';
+import { loginResponse } from "../../Types/AuthData.ts";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,8 +29,8 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await login(formData);
-      if ("data" in response) {
+      const response: loginResponse = await login(formData);
+      if ("data" in response && response.data != undefined) {
         const { token, user } = response.data.data;
         
         const expiry = new Date().getTime() + 60 * 60 * 1000; 

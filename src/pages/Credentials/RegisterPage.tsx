@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useRegisterMutation } from "../../services/api";  
+import { useRegisterMutation } from "../../services/loginApiSlice";  
+import { registerResponse } from "../../Types/AuthData";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +24,7 @@ const RegisterPage = () => {
     companyName: "",
   });
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -31,24 +33,30 @@ const RegisterPage = () => {
     }
     setIsLoading(true);
     try {
-      // const response = await fetch("http://localhost:5001/api/auth/register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-
-      const response2:any = await register(formData);
+      
+      const response2 : registerResponse = await register(formData);
       console.log("response", response2);
-      const data = await response2;
+      const data = response2;
       console.log(data);
       if (response2.data) {
         alert(response2.data.message);
         console.log("Success:", response2.data.message);
         navigate("/");
       } else if (response2.error)  {
-        const errorMessage = response2.error.data?.message || "Unknown error occurred.";
+        
+        let errorMessage = "Unknown error occurred.";
+
+        if ("error" in response2) {
+          const error = response2.error;
+
+          if (typeof error === "object" && error !== null && "data" in error) {
+            const errData = (error as FetchBaseQueryError).data;
+
+            if (typeof errData === "object" && errData !== null && "message" in errData) {
+              errorMessage = (errData as { message: string }).message;
+            }
+          }
+        }
         alert(errorMessage);
         console.log("Error:", errorMessage);
       }
@@ -59,7 +67,7 @@ const RegisterPage = () => {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: 	React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -87,7 +95,6 @@ const RegisterPage = () => {
             <div className="border-b border-gray-900/10 pb-12">
               <h1 className="text-2xl font-semibold text-gray-900 text-center">Register</h1>
 
-              {/* Role Selection */}
               <div className="sm:col-span-3 mt-4">
                 <label htmlFor="role" className="block text-sm font-medium text-gray-900">
                   Role:
@@ -106,7 +113,6 @@ const RegisterPage = () => {
                 </div>
               </div>
 
-              {/* Name Inputs */}
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
                   <label htmlFor="name" className="block text-sm font-medium text-gray-900">
@@ -170,7 +176,6 @@ const RegisterPage = () => {
                   />
                 </div>
 
-                {/* Company Name - only for Operators */}
                 {formData.role === "Operator" && (
                   <div className="sm:col-span-6">
                     <label htmlFor="companyName" className="block text-sm font-medium text-gray-900">
@@ -188,7 +193,6 @@ const RegisterPage = () => {
                   </div>
                 )}
 
-                {/* Password */}
                 <div className="sm:col-span-6">
                   <label htmlFor="password" className="block text-sm font-medium text-gray-900">
                     Password
@@ -214,7 +218,6 @@ const RegisterPage = () => {
                   </div>
                 </div>
 
-                {/* Confirm Password */}
                 <div className="sm:col-span-6">
                   <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-900">
                     Confirm Password
@@ -254,7 +257,6 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          {/* Submit Buttons */}
           <div className="mt-6 flex items-center justify-center gap-x-6">
             <button type="button" className="text-sm font-semibold text-gray-900">
               Cancel

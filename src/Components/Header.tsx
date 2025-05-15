@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "../services/api";
+import { useLogoutMutation } from "../services/loginApiSlice";
 
 
 const Header: React.FC = () => {

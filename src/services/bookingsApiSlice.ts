@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Booking, TicketCancellationRequest, TicketCancellationResponse, BookingCancellationRequest, BookingCancellationResponse } from '../Types/Booking';
+import { Booking, BookingResponse, TicketCancellationRequest, TicketCancellationResponse, BookingCancellationRequest, BookingCancellationResponse } from '../Types/Booking';
 
 export const bookingApiSlice = createApi({
   reducerPath: 'bookingApi', 

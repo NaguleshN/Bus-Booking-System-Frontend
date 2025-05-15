@@ -31,3 +31,12 @@ export interface BookingCancellationResponse{
     data: Booking;
 }
     
+export interface BookingResponse {
+    success: boolean;
+    message: string;
+    data: Booking[];
+  }
+
+export interface bookingRequest {
+    bookingId: string;
+}
