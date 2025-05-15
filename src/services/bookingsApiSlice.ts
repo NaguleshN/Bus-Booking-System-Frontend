@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Booking, BookingResponse, TicketCancellationRequest, TicketCancellationResponse, BookingCancellationRequest, BookingCancellationResponse } from '../Types/Booking';
+import { Bookings, BookingResponse, TicketCancellationRequest, TicketCancellationResponse, BookingCancellationRequest, BookingCancellationResponse } from '../Types/Booking';
 
 export const bookingApiSlice = createApi({
   reducerPath: 'bookingApi', 
@@ -14,10 +14,10 @@ export const bookingApiSlice = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getBookings: builder.query({
+    getBookings: builder.query<Bookings, void>({
       query: () => '/bookings',
     }),
-    getBookingById: builder.query({
+    getBookingById: builder.query<BookingResponse, string>({
       query: (bookingId) => `/bookings/${bookingId}`,
     }),
 

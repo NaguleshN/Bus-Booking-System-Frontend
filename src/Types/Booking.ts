@@ -10,6 +10,12 @@ export interface Booking {
     createdAt: string;
 }
 
+export type Bookings = {
+    data: Booking[],
+    message:string,
+    success: boolean
+}
+
 export interface TicketCancellationRequest {
     bookingId: string;
     seat: number;
@@ -34,9 +40,5 @@ export interface BookingCancellationResponse{
 export interface BookingResponse {
     success: boolean;
     message: string;
-    data: Booking[];
-  }
-
-export interface bookingRequest {
-    bookingId: string;
+    data: Booking;
 }

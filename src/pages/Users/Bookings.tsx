@@ -11,13 +11,14 @@ const Bookings: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const ticketRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const navigate = useNavigate();
-  const { data } = useGetBookingsQuery({});
+  const { data } = useGetBookingsQuery();
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         console.log("DAta",data)
-        if (data?.data) {
+        console.log(data?.data)
+        if (data!= undefined && data?.data) {
           setBookings(data.data); 
         }
       } catch (err) {
@@ -26,7 +27,7 @@ const Bookings: React.FC = () => {
     };
 
     fetchBookings();
-  }, [data  ]);
+  }, [data]);
 
   const handleDownload = (booking: Booking) => {
     const element = ticketRefs.current[booking._id];

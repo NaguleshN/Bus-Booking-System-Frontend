@@ -10,7 +10,7 @@ const BookingCancellation: React.FC = () => {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { data: bookingData, refetch } = useGetBookingByIdQuery(bookingId);
+  const { data: bookingData, refetch } = useGetBookingByIdQuery(bookingId || "");
   const [cancellingSeat] = useCancelSeatsMutation();
   const [cancellingBooking] = useCancelBookingMutation();
 
