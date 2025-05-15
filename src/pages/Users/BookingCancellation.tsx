@@ -1,35 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Header from '../../Components/Header';
+import { Booking } from '../../Types/Booking';
+import { useGetBookingByIdQuery, useCancelSeatsMutation, useCancelBookingMutation } from '../../services/bookingsApiSlice';
 
-interface Booking {
-  _id: string;
-  seatsBooked: number[];
-  seatsCancelled: number[];
-  totalPrice: number;
-  bookingStatus: string;
-  paymentStatus: string;
-  createdAt: string;
-}
 
 const BookingCancellation: React.FC = () => {
   const { bookingId } = useParams<{ bookingId: string }>();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const token = JSON.parse(localStorage.getItem('AuthToken') || '{}')?.token;
+  const { data: bookingData, refetch } = useGetBookingByIdQuery(bookingId);
+  const [cancellingSeat] = useCancelSeatsMutation();
+  const [cancellingBooking] = useCancelBookingMutation();
 
-  // Reusable fetch function
   const fetchBooking = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5001/api/user/bookings/${bookingId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setBooking(res.data.data || null);
+      
+      console.log(bookingData?.data)
+        if (bookingData?.data) {
+            setBooking(bookingData?.data);
+        }
       setError(null);
     } catch (err) {
       console.error('Error fetching booking:', err);
@@ -41,21 +33,21 @@ const BookingCancellation: React.FC = () => {
 
   useEffect(() => {
     fetchBooking();
-  }, [bookingId, token]);
+  }, [bookingId, bookingData]);
 
   const cancelSeat = async (seat: number) => {
-    try {
-      await axios.delete(`http://localhost:5001/api/user/tickets/${bookingId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        data: {
-          seatNumbers: [seat],
-        },
-      });
-
-      fetchBooking();
+      if (!bookingId) {
+        setError('Invalid booking ID.');
+        return;
+      }
+    
+      try {
+        console.log('Cancelling seat:', seat, bookingId);
+        const res = await cancellingSeat({ bookingId, seat }).unwrap();
+        console.log(res.message); 
+        console.log(res.data);    
+        await refetch();
+      
     } catch (err) {
       console.error('Error cancelling seat:', err);
       setError('Failed to cancel seat. Please try again.');
@@ -63,14 +55,14 @@ const BookingCancellation: React.FC = () => {
   };
 
   const cancelBooking = async () => {
+    if(!bookingId) {
+      setError('Invalid booking ID.');
+      return;
+    }
     try {
-      await axios.delete(`http://localhost:5001/api/user/bookings/${bookingId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      fetchBooking();
+      await cancellingBooking({ bookingId }).unwrap();
+      console.log('Booking cancelled successfully');
+      await refetch();
     } catch (err) {
       console.error('Error cancelling booking:', err);
       setError('Failed to cancel booking. Please try again.');

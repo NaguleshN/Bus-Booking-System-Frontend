@@ -1,46 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
 import Header from '../../Components/Header';
 import html2pdf from 'html2pdf.js';
 import DataTable from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
+import { useGetBookingsQuery } from '../../services/bookingsApiSlice';
+import { Booking } from '../../Types/Booking';
 
-interface Booking {
-  _id: string;
-  userId: string;
-  tripId: string;
-  seatsBooked: number[];
-  seatsCancelled: number[];
-  totalPrice: number;
-  paymentStatus: string;
-  bookingStatus: string;
-  createdAt: string;
-}
 
 const Bookings: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const ticketRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const token: any = localStorage.getItem('AuthToken');
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { data } = useGetBookingsQuery({});
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const parsed = JSON.parse(token);
-        const parsedtoken = parsed.token;
-        const res = await axios.get('http://localhost:5001/api/user/bookings', {
-          headers: {
-            Authorization: `Bearer ${parsedtoken}`,
-          },
-        });
-        setBookings(res.data.data);
+        console.log("DAta",data)
+        if (data?.data) {
+          setBookings(data.data); 
+        }
       } catch (err) {
         console.error('Error fetching bookings:', err);
       }
     };
 
     fetchBookings();
-  }, []);
+  }, [data  ]);
 
   const handleDownload = (booking: Booking) => {
     const element = ticketRefs.current[booking._id];
@@ -104,9 +90,6 @@ const Bookings: React.FC = () => {
           Download
         </button>
       ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
     },
     {
         name: 'Cancel',
@@ -121,9 +104,6 @@ const Bookings: React.FC = () => {
             Cancel
           </button>
         ),
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
       }
       
   ];

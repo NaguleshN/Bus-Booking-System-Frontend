@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Header from '../../Components/Header.tsx';
 import Footer from '../../Components/Footer.tsx';
-// import { useNavigate } from "react-router-dom";
 import { Toaster , toast } from 'react-hot-toast';
 
 interface Trip {

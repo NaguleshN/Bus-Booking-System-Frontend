@@ -15,6 +15,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
     if (currentTime > user_info.expiry) {
       localStorage.removeItem("AuthToken");
       console.log("Session expired. Please log in again.");
+      localStorage.setItem("toastMessage", "Session expired. Please log in again.");
     }
     else {
       console.log("Token valid:", user_info.token);
@@ -27,6 +28,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
     console.log(hasRole)
     
     if (!isAuthenticated || !hasRole) {
+      if (!localStorage.getItem("toastMessage")) {
+        localStorage.setItem("toastMessage", "Unauthorized access. Please log in.");
+      }
       return <Navigate to="/login" replace />;
     }
 

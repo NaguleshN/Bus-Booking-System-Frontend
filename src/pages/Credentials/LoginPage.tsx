@@ -1,12 +1,22 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../services/api";
+import Toast from '../../Components/Toast.tsx';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    const toastMsg = localStorage.getItem("toastMessage");
+    if (toastMsg) {
+      setToastMsg(toastMsg);
+      localStorage.removeItem("toastMessage"); 
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -56,11 +66,18 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-gray-50">
+       {toastMsg && (
+        <Toast
+          message={toastMsg}
+          type="error"
+          onClose={() => setToastMsg(null)}
+        />
+      )}
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Login to Your Account</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email */}
+        
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email address
@@ -76,7 +93,6 @@ const LoginPage = () => {
             />
           </div>
 
-          {/* Password */}
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
@@ -101,7 +117,7 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
+        
           <div className="flex justify-between items-center">
             <button
               type="button"
@@ -119,7 +135,7 @@ const LoginPage = () => {
             </button>
           </div>
 
-          {/* Loader */}
+         
           {isLoading && (
             <div className="flex justify-center">
               <div className="h-5 w-5 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
@@ -127,7 +143,7 @@ const LoginPage = () => {
           )}
         </form>
 
-        {/* Register Link */}
+       
         <p className="text-sm text-center text-gray-600 mt-6">
           Don’t have an account?{" "}
           <span
