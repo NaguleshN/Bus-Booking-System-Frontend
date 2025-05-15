@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import LoginPage from './Components/Credentials/LoginPage.tsx'
-import RegisterPage from './Components/Credentials/RegisterPage.tsx'
+import LoginPage from './pages/Credentials/LoginPage.tsx'
+import RegisterPage from './pages/Credentials/RegisterPage.tsx'
 import './index.css';
 import "tailwindcss";
 import ProtectedRoute from './Components/Auth/ProtectedRoutes.tsx';
-import TripSearchPage from './Components/Users/TripSearchPage.tsx';
-import TripBooking from './Components/Users/TripBooking.tsx';
-import Bookings from './Components/Users/Bookings.tsx';
-import BookingCancellation from './Components/Users/BookingCancellation.tsx';
+import TripSearchPage from './pages/Users/TripSearchPage.tsx';
+import TripBooking from './pages/Users/TripBooking.tsx';
+import Bookings from './pages/Users/Bookings.tsx';
+import BookingCancellation from './pages/Users/BookingCancellation.tsx';
 
 function App() {
 

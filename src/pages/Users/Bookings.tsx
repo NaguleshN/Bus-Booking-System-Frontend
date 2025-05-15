@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Header from '../Header';
+import Header from '../../Components/Header';
 import html2pdf from 'html2pdf.js';
 import DataTable from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';

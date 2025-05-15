@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import Header from "../Header"
-import Footer from "../Footer";
+import Header from "../../Components/Header"
+import Footer from "../../Components/Footer";
 import { useNavigate } from "react-router-dom";
 
 type Trip = {
