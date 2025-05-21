@@ -1,8 +1,8 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../services/loginApiSlice.ts";
-import Toast from '../../Components/Toast.tsx';
-import { loginResponse } from "../../Types/AuthData.ts";
+import { useLoginMutation } from "../../services/loginApiSlice";
+import Toast from '../../Components/Toast';
+import { loginResponse } from "../../Types/AuthData";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,9 +29,14 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
+      // console.log(formData.email)
       const response: loginResponse = await login(formData);
-      if ("data" in response && response.data != undefined) {
+      // console.log("Login response:", response);
+      // console.log("Data",response.data)
+      if ("data" in response && response.data != undefined && response.data.data != undefined) {
         const { token, user } = response.data.data;
+        // console.log("Data.data",response.data.data)
+
         
         const expiry = new Date().getTime() + 60 * 60 * 1000; 
       
@@ -48,10 +53,14 @@ const LoginPage = () => {
       } else if ("error" in response) {
         const errorMessage = "User not Found";
         alert(errorMessage);
-        console.error("Login error:", errorMessage);
+        console.log("Login error:", errorMessage);
+      }
+      else{
+        const errorMessage = "An unexpected error occurred";
+        alert(errorMessage);
+        console.log("Login error:", errorMessage);
       }
     } catch (err) {
-      console.error("Unexpected error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +80,9 @@ const LoginPage = () => {
         <Toast
           message={toastMsg}
           type="error"
-          onClose={() => setToastMsg(null)}
+          onClose={
+            () => setToastMsg(null)
+ }
         />
       )}
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
@@ -111,13 +122,13 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
+                data-testid="toggle-password"
                 className="absolute inset-y-0 right-3 flex items-center text-gray-500 text-sm"
               >
                 {showPassword ? "🙈" : "👁️"}
               </button>
             </div>
           </div>
-
         
           <div className="flex justify-between items-center">
             <button
@@ -139,7 +150,8 @@ const LoginPage = () => {
          
           {isLoading && (
             <div className="flex justify-center">
-              <div className="h-5 w-5 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
+              <div className="h-5 w-5 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"
+              data-testid="spinner"  />
             </div>
           )}
         </form>

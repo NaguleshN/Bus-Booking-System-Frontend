@@ -1,17 +1,16 @@
-// services/api.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { loginRequest, registerRequest } from '../Types/AuthData';
-
+import fetch from 'cross-fetch';
 
 export const myApi = createApi({
   reducerPath: 'myApi', 
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5001/api' ,
     credentials: 'include',
+    fetchFn: fetch, 
   }),
 
   endpoints: (builder) => ({
-  
     login: builder.mutation({
       query: (credentials : loginRequest) => ({
         url: '/auth/login',

@@ -61,7 +61,7 @@ const RegisterPage = () => {
         console.log("Error:", errorMessage);
       }
     } catch (err) {
-      console.error(err);
+      // console.log(err);
     }finally {
         setIsLoading(false); 
     }
@@ -80,8 +80,7 @@ const RegisterPage = () => {
       );
     }
 
-    if (name === "password" && formData.confirmPassword) {
-      setPasswordMatchMsg(
+    if (name === "password" && formData.confirmPassword) { setPasswordMatchMsg(
         value === formData.confirmPassword ? "Passwords match" : "Passwords do not match"
       );
     }
@@ -159,7 +158,7 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="sm:col-span-6">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-900">
                     Phone Number
                   </label>
                   <input
@@ -210,6 +209,7 @@ const RegisterPage = () => {
                     />
                     <button
                       type="button"
+                      data-testid="toggle-password"
                       className="absolute inset-y-0 right-3 flex items-center text-gray-500"
                       onClick={() => setShowPassword(!showPassword)}
                     >
@@ -235,6 +235,7 @@ const RegisterPage = () => {
                     />
                     <button
                       type="button"
+                      data-testid="toggle-confirm-password"
                       className="absolute inset-y-0 right-3 flex items-center text-gray-500"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >

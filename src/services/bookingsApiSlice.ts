@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Bookings, BookingResponse, TicketCancellationRequest, TicketCancellationResponse, BookingCancellationRequest, BookingCancellationResponse } from '../Types/Booking';
+import fetch from 'cross-fetch';
 
 export const bookingApiSlice = createApi({
   reducerPath: 'bookingApi', 
@@ -12,6 +13,7 @@ export const bookingApiSlice = createApi({
       }
       return headers;
     },
+    fetchFn: fetch, 
   }),
   endpoints: (builder) => ({
     getBookings: builder.query<Bookings, void>({

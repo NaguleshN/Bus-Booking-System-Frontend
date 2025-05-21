@@ -4,38 +4,16 @@ import { format } from "date-fns";
 import Header from "../../Components/Header"
 import Footer from "../../Components/Footer";
 import { useNavigate } from "react-router-dom";
+// import { selectUser, selectIsAuthenticated } from "../../services/state/AuthSlice";
+// import { useSelector } from "react-redux";
+import { Trip, PaginationResponse } from "../../Types/TripData"; 
 
-type Trip = {
-  _id: string;
-  source: string;
-  destination: string;
-  departureTime: string;
-  arrivalTime: string;
-  price: number;
-  availableSeats: number;
-  busId: {
-    _id: string;
-    busNumber: string;
-  };
-  operatorId: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-};
 
-type PaginationResponse = {
-    data : {
-
-        data: Trip[];
-        total: number;
-        currentPage: number;
-        limit: number;
-        totalPages: number;
-    }
-};
 
 const TripSearchPage: React.FC = () => {
+  // const user = useSelector(selectUser);
+  // const isAuthenticated =useSelector(selectIsAuthenticated)
+  // console.log("user",user, isAuthenticated);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   // const [startDate, setStartDate] = useState("");
@@ -50,7 +28,6 @@ const TripSearchPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   
-  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
@@ -118,8 +95,9 @@ const TripSearchPage: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">From</label>
+                <label htmlFor="from" className="text-sm font-medium text-gray-700">From</label>
                 <input
+                  id="from"
                   type="text"
                   placeholder="Departure city"
                   value={from}

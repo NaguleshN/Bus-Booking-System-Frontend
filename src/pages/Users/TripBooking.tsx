@@ -151,7 +151,7 @@ const TripBooking: React.FC = () => {
         const parsed = JSON.parse(token);
         const parsedtoken = parsed.token;
         console.log(parsedtoken)
-        if (window.confirm('Booking successful! Do you want to go to your bookings?')) {
+        if (window.confirm('Booking successful! Do you want to confirm your bookings?')) {
             // navigate('/bookings');
             const respon = await axios.post(`http://localhost:5001/api/user/bookings/${tripId}`, {
                 tripId: trip?._id,

@@ -11,6 +11,9 @@ const config: Config = {
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
+  testPathIgnorePatterns: ['/node_modules/', '/tests/','/tests-examples'],
+
+  // testMatch: ['**/__tests__/**/*.test.ts'],
 };
 
 export default config;

@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-// const REGISTER_URL = 'http://localhost:3000/register';
 const BASE_URL = 'http://localhost:3000'; 
 const REGISTER_URL= `${BASE_URL}/register`;
 const LOGIN_URL = `${BASE_URL}/login`;
@@ -65,30 +64,5 @@ test.describe('RegisterPage Tests', () => {
     await expect(page.locator('text=Email already exists')).not.toBeVisible();
     await page.screenshot({ path: 'screenshots/register/registration-failure.png' });
   });
-
-//   test('should toggle password visibility', async ({ page }) => {
-//     await page.fill('input[name="password"]', 'Password123');
-//     await page.click('button:has-text("👁️")');
-//     await expect(page.locator('input[name="password"]')).toHaveAttribute('type', 'text');
-//     await page.click('button:has-text("🙈")');
-//     await expect(page.locator('input[name="password"]')).toHaveAttribute('type', 'password');
-//   });
-
-//   test('should toggle confirm password visibility', async ({ page }) => {
-//     await page.fill('input[name="confirmPassword"]', 'Password123');
-//     await page.click('button:has-text("👁️")');
-//     await expect(page.locator('input[name="confirmPassword"]')).toHaveAttribute('type', 'text');
-//     await page.click('button:has-text("🙈")');
-//     await expect(page.locator('input[name="confirmPassword"]')).toHaveAttribute('type', 'password');
-//   });
-
-//   test('should show companyName field when role is operator', async ({ page }) => {
-//     await page.selectOption('select[name="role"]', 'operator');
-//     await expect(page.locator('input[name="companyName"]')).toBeVisible();
-//   });
-
-//   test('should take a screenshot of the register page', async ({ page }) => {
-//     await page.screenshot({ path: 'screenshots/register/register-page.png', fullPage: true });
-//   });
 
 });
